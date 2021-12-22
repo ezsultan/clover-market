@@ -123,11 +123,7 @@ class _DetailProductState extends State<DetailProduct> {
           children: [
             // Note : Header
             Container(
-              margin: EdgeInsets.only(
-                top: defaultMargin,
-                left: 67,
-                right: 67,
-              ),
+              margin: EdgeInsets.only(top: defaultMargin, left: 40, right: 40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -158,9 +154,6 @@ class _DetailProductState extends State<DetailProduct> {
                         fontSize: 14,
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 30,
                   ),
                 ],
               ),

@@ -32,12 +32,20 @@ class CartPage extends StatelessWidget {
     Widget cartItems() {
       return Container(
         width: double.infinity,
-        height: 100,
+        height: 130,
         margin: const EdgeInsets.only(
           left: 30,
           right: 30,
           top: 20,
-          bottom: 20,
+          bottom: 10,
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 10,
+        ),
+        decoration: BoxDecoration(
+          color: kWhiteColor,
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
           children: [
@@ -48,7 +56,7 @@ class CartPage extends StatelessWidget {
                 right: 15,
               ),
               decoration: BoxDecoration(
-                color: kWhiteColor,
+                color: kBackgroundColor,
                 borderRadius: BorderRadius.circular(
                   18,
                 ),
@@ -57,9 +65,8 @@ class CartPage extends StatelessWidget {
                 child: Container(
                   width: 70,
                   height: 70,
-                  decoration: BoxDecoration(
-                    color: kWhiteColor,
-                    image: const DecorationImage(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
                       fit: BoxFit.cover,
                       image: AssetImage(
                         'assets/jeruk.png',
@@ -90,23 +97,18 @@ class CartPage extends StatelessWidget {
                   height: 10,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
                       onTap: () {},
-                      child: Container(
-                        width: 18,
-                        height: 18,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/Groupmin.png'),
-                          ),
-                        ),
+                      child: Image.asset(
+                        'assets/Groupmin.png',
+                        width: 24,
+                        color: kGreyColor,
                       ),
                     ),
                     Container(
-                      width: 18,
-                      height: 18,
+                      width: 30,
+                      height: 30,
                       decoration: const BoxDecoration(),
                       child: const Center(
                         child: Text('1'),
@@ -114,14 +116,10 @@ class CartPage extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {},
-                      child: Container(
-                        width: 18,
-                        height: 18,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/Groupplus.png'),
-                          ),
-                        ),
+                      child: Image.asset(
+                        'assets/Groupplus.png',
+                        width: 24,
+                        color: kPrimaryColor,
                       ),
                     ),
                   ],
@@ -150,6 +148,8 @@ class CartPage extends StatelessWidget {
       appBar: _buildAppbar(),
       body: ListView(
         children: [
+          cartItems(),
+          cartItems(),
           cartItems(),
         ],
       ),

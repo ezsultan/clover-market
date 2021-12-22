@@ -15,7 +15,7 @@ class CustomeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 45),
+        padding: const EdgeInsets.symmetric(horizontal: 40),
         width: double.infinity,
         height: 50,
         margin: const EdgeInsets.only(bottom: 20),

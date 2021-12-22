@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:clover/widget/bottom_textbutton.dart';
 import 'package:clover/widget/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../shared/theme.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -17,6 +20,39 @@ class _SignUpPageState extends State<SignUpPage> {
 
   TextEditingController passwordController = TextEditingController();
   bool _isObscure = true;
+
+  register(username, email, password) async {
+    try {
+      http.Response response = await http.post(
+        Uri.parse('https://api-clover.herokuapp.com/api/register'),
+        body: {
+          'username': username,
+          'email': email,
+          'password': password,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body.toString());
+        print(data['token']);
+        print('login berhasil');
+
+        if (response.body != null) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/sign-in', (route) => false);
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text('Data yang anda masukan salah'),
+          ),
+        );
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +92,7 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Column(
             children: [
               TextFormField(
+                controller: usernameController,
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -88,6 +125,7 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Column(
             children: [
               TextFormField(
+                controller: emailController,
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -120,6 +158,7 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Column(
             children: [
               TextFormField(
+                controller: passwordController,
                 obscureText: _isObscure,
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
@@ -159,10 +198,10 @@ class _SignUpPageState extends State<SignUpPage> {
       return CustomeButton(
         text: 'Masuk',
         onPressed: () {
-          Navigator.pushNamed(
-            context,
-            '/home',
-          );
+          register(
+              usernameController.text.toString(),
+              emailController.text.toString(),
+              passwordController.text.toString());
         },
       );
     }

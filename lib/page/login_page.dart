@@ -71,19 +71,13 @@ class _LoginPageState extends State<LoginPage> {
                       color: kPrimaryColor,
                     ),
                   ),
-                  hintText: 'Alamat Email',
+                  hintText: 'email',
                   prefixIcon: Icon(
                     Icons.email,
                     size: 24,
                     color: kPrimaryColor,
                   ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
               ),
             ],
           ),
@@ -111,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                     color: kPrimaryColor,
                   ),
                 ),
-                hintText: 'Kata Sandi',
+                hintText: 'kata sandi',
                 prefixIcon: Icon(
                   Icons.lock,
                   size: 24,
@@ -131,12 +125,6 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
             ),
           ],
         ),

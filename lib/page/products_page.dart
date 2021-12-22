@@ -9,7 +9,7 @@ class ProductPage extends StatelessWidget {
     var size = MediaQuery.of(context).size;
 
     /*24 is for notification bar on Android*/
-    final double itemHeight = (size.height - kToolbarHeight - 24) / 3;
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 2.5;
     final double itemWidth = size.width / 2;
     return Scaffold(
       body: SafeArea(

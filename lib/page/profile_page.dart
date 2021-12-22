@@ -1,4 +1,3 @@
-import 'package:clover/shared/bottom_navbar.dart';
 import 'package:clover/shared/theme.dart';
 import 'package:clover/widget/profile_tile.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +57,6 @@ class ProfilePage extends StatelessWidget {
         ),
         elevation: 0,
       ),
-      bottomNavigationBar: const BottomNavbar(),
       body: Column(
         children: [
           image(),
