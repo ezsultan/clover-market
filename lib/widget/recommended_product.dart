@@ -1,20 +1,15 @@
+import 'package:clover/model/product_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../shared/theme.dart';
 
 class RecommendedProduct extends StatelessWidget {
-  final String name;
-  final String category;
-  final String imageUrl;
-  final String price;
-  const RecommendedProduct(
-      {Key? key,
-      required this.category,
-      required this.name,
-      required this.imageUrl,
-      required this.price})
-      : super(key: key);
+  final ProductModel product;
+  const RecommendedProduct({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,84 +19,68 @@ class RecommendedProduct extends StatelessWidget {
       },
       child: Container(
         margin: const EdgeInsets.only(right: 10),
-        width: 180,
-        height: 270,
+        width: 170,
+        height: 260,
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 1,
-              offset: const Offset(0, 2),
-            ),
-          ],
-          color: kWhiteColor,
+          color: kBackgroundColor,
           borderRadius: BorderRadius.circular(25),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 10,
+              height: 25,
             ),
-            Image.asset(
-              imageUrl,
-              width: 215,
+            Image.network(
+              product.photos![0].url!,
+              width: 170,
               height: 150,
+              fit: BoxFit.cover,
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              padding: const EdgeInsets.only(
-                left: 20,
-                top: 10,
-                right: 20,
-              ),
-              child: Expanded(
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          category,
-                          style: greyTextStyle.copyWith(
-                            fontSize: 12,
-                          ),
-                        ),
-                        Text(
-                          name,
-                          style: blackTextStyle.copyWith(
-                            fontSize: 16,
-                            fontWeight: semiBold,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Text(
-                          price,
-                          style: greenTextStyle.copyWith(
-                            fontSize: 14,
-                            fontWeight: bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    InkWell(
-                      onTap: () {},
-                      child: Icon(
-                        Icons.add_shopping_cart,
-                        color: kPrimaryColor,
-                      ),
-                    ),
-                  ],
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10),
                 ),
-              ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.category!.name!,
+                        style: greyTextStyle.copyWith(
+                          fontSize: 12,
+                        ),
+                      ),
+                      Text(
+                        product.name!,
+                        style: blackTextStyle.copyWith(
+                          fontSize: 18,
+                          fontWeight: semiBold,
+                        ),
+                        maxLines: 1,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Rp ${product.price!.round().toString()}',
+                        style: greenTextStyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.add_shopping_cart,
+                    color: kPrimaryColor,
+                  ),
+                ),
+              ],
             )
           ],
         ),

@@ -1,7 +1,13 @@
+// ignore_for_file: unused_import, unused_local_variable
+
+import 'package:clover/model/user_model.dart';
+import 'package:clover/provider/auth_provider.dart';
+import 'package:clover/provider/product_provider.dart';
 import 'package:clover/widget/discount_product.dart';
 import 'package:clover/widget/recommended_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import '../shared/theme.dart';
 
 class HomePage extends StatelessWidget {
@@ -9,6 +15,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
     // ini adalah Widget untuk Header
     Widget header() {
       return Container(
@@ -56,39 +63,11 @@ class HomePage extends StatelessWidget {
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: const [
-              RecommendedProduct(
-                category: 'sayuran',
-                name: "Kol",
-                imageUrl: 'assets/kol.png',
-                price: '5000/kg',
-              ),
-              RecommendedProduct(
-                category: 'Buah',
-                name: "Apel",
-                imageUrl: 'assets/apel.png',
-                price: '35000/kg',
-              ),
-              RecommendedProduct(
-                category: 'sayuran',
-                name: "Mentimun",
-                imageUrl: 'assets/timun.png',
-                price: '7000/kg',
-              ),
-              RecommendedProduct(
-                category: 'buah',
-                name: "jeruk",
-                imageUrl: 'assets/jeruk.png',
-                price: '15000/kg',
-              ),
-              RecommendedProduct(
-                category: 'buah',
-                name: 'mangga',
-                imageUrl: 'assets/mangga.png',
-                price: '10000/kg',
-              ),
-            ],
-          ),
+              children: productProvider.products
+                  .map(
+                    (product) => RecommendedProduct(product: product),
+                  )
+                  .toList()),
         ),
       );
     }

@@ -1,9 +1,10 @@
-import 'dart:convert';
+// ignore_for_file: unused_import
 
+import 'package:clover/provider/auth_provider.dart';
 import 'package:clover/widget/bottom_textbutton.dart';
 import 'package:clover/widget/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../shared/theme.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -14,66 +15,77 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  TextEditingController usernameController = TextEditingController();
+  final TextEditingController usernameController =
+      TextEditingController(text: '');
 
-  TextEditingController emailController = TextEditingController();
+  final TextEditingController emailController = TextEditingController(text: '');
 
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordController =
+      TextEditingController(text: '');
   bool _isObscure = true;
-
-  register(username, email, password) async {
-    try {
-      http.Response response = await http.post(
-        Uri.parse('https://api-clover.herokuapp.com/api/register'),
-        body: {
-          'username': username,
-          'email': email,
-          'password': password,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        var data = jsonDecode(response.body.toString());
-        print(data['token']);
-        print('login berhasil');
-
-        if (response.body != null) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/sign-in', (route) => false);
-        }
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Data yang anda masukan salah'),
-          ),
-        );
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    handleSignUp() async {
+      bool? register = await authProvider.register(
+        username: usernameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
+      if (register ?? false) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/home',
+          (route) => false,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: kRedColor,
+            duration: const Duration(seconds: 3),
+            content: const Text(
+              'Gagal Register !',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+    }
+
     Widget header() {
       return Container(
-        margin:
-            const EdgeInsets.only(left: 45, right: 45, top: 136, bottom: 30),
+        margin: const EdgeInsets.only(
+          left: 45,
+          right: 45,
+          top: 100,
+          bottom: 30,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Align(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'assets/icon_wortel.png',
+                width: 50,
+              ),
+            ),
+            const SizedBox(
+              height: 80,
+            ),
             Text(
-              'Belum Punya Akun?,,',
-              style: greenTextStyle.copyWith(
+              'Silahkan Daftar',
+              style: blackTextStyle.copyWith(
                 fontSize: 24,
                 fontWeight: bold,
               ),
             ),
             Text(
-              'Silahkan Daftar',
-              style: greenTextStyle.copyWith(
-                fontSize: 18,
+              'Silahkan daftar terlebih dahulu',
+              style: secondaryTextStyle.copyWith(
+                fontSize: 16,
                 fontWeight: medium,
               ),
             ),
@@ -83,32 +95,33 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     Widget nameInput() {
-      return Form(
-        child: Container(
-          padding: const EdgeInsets.only(
-            left: 45,
-            right: 45,
-          ),
-          child: Column(
-            children: [
-              TextFormField(
-                controller: usernameController,
-                decoration: InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: kPrimaryColor,
-                    ),
+      return Container(
+        padding: const EdgeInsets.only(
+          left: 45,
+          right: 45,
+        ),
+        child: Column(
+          children: [
+            TextFormField(
+              controller: usernameController,
+              decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: kSecondaryColor,
                   ),
-                  hintText: 'username',
-                  prefixIcon: Icon(
+                ),
+                hintText: 'Username',
+                prefixIcon: Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  child: Icon(
                     Icons.person,
                     size: 24,
                     color: kPrimaryColor,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
@@ -132,11 +145,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       color: kPrimaryColor,
                     ),
                   ),
-                  hintText: 'email',
-                  prefixIcon: Icon(
-                    Icons.email,
-                    size: 24,
-                    color: kPrimaryColor,
+                  hintText: 'Email',
+                  prefixIcon: Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: Icon(
+                      Icons.email,
+                      size: 24,
+                      color: kPrimaryColor,
+                    ),
                   ),
                 ),
               ),
@@ -166,11 +182,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       color: kPrimaryColor,
                     ),
                   ),
-                  hintText: 'kata sandi',
-                  prefixIcon: Icon(
-                    Icons.lock,
-                    size: 24,
-                    color: kPrimaryColor,
+                  hintText: 'Kata sandi',
+                  prefixIcon: Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: Icon(
+                      Icons.lock,
+                      size: 24,
+                      color: kPrimaryColor,
+                    ),
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -194,15 +213,10 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     // ini adalah wodget untuk tombol masuk
-    Widget buttonLogin() {
+    Widget buttonRegister() {
       return CustomeButton(
-        text: 'Masuk',
-        onPressed: () {
-          register(
-              usernameController.text.toString(),
-              emailController.text.toString(),
-              passwordController.text.toString());
-        },
+        text: 'Daftar',
+        onPressed: handleSignUp,
       );
     }
 
@@ -225,7 +239,7 @@ class _SignUpPageState extends State<SignUpPage> {
             nameInput(),
             emailInput(),
             passwordInput(),
-            buttonLogin(),
+            buttonRegister(),
           ],
         ),
       ),

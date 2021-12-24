@@ -1,15 +1,11 @@
-import 'package:clover/common/constant.dart';
-import 'package:clover/model/login_request.dart';
-import 'package:clover/model/login_response.dart';
-import 'package:clover/network/api_client.dart';
+import 'package:clover/provider/auth_provider.dart';
+import 'package:clover/shared/custom_tac.dart';
 import 'package:clover/shared/theme.dart';
-import 'package:clover/widget/bottom_textbutton.dart';
 import 'package:clover/widget/custom_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'main_page.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({key}) : super(key: key);
@@ -19,31 +15,81 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _cEmail = TextEditingController();
-  final TextEditingController _cPassword = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool _isObscure = true;
-  final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
+
   @override
-  // ini adalah widget untuk menampilkan logo
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    handleSignIn() async {
+      setState(() {
+        isLoading = true;
+      });
+
+      bool? register = await authProvider.login(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      if (register ?? false) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/home',
+          (route) => false,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: const Text('Data yang anda masukan salah'),
+            duration: const Duration(seconds: 3),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
+          ),
+        );
+      }
+      setState(
+        () {
+          isLoading = false;
+        },
+      );
+    }
+
     Widget header() {
       return Container(
-        margin:
-            const EdgeInsets.only(left: 45, right: 45, top: 136, bottom: 30),
+        margin: const EdgeInsets.only(
+          left: 45,
+          right: 45,
+          top: 100,
+          bottom: 30,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Align(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'assets/icon_wortel.png',
+                width: 50,
+              ),
+            ),
+            const SizedBox(
+              height: 80,
+            ),
             Text(
-              'Selamat Datang,,',
-              style: greenTextStyle.copyWith(
+              'Login',
+              style: blackTextStyle.copyWith(
                 fontSize: 24,
                 fontWeight: bold,
               ),
             ),
             Text(
-              'Silahkan Login',
+              'Masukan email dan password',
               style: greenTextStyle.copyWith(
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: medium,
               ),
             ),
@@ -54,33 +100,33 @@ class _LoginPageState extends State<LoginPage> {
 
     // ini adalah widget untuk menampilkan field berupa inputan
     Widget emailInput() {
-      return Form(
-        key: _formKey,
-        child: Container(
-          padding: const EdgeInsets.only(
-            left: 45,
-            right: 45,
-          ),
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _cEmail,
-                decoration: InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: kPrimaryColor,
-                    ),
+      return Container(
+        padding: const EdgeInsets.only(
+          left: 45,
+          right: 45,
+        ),
+        child: Column(
+          children: [
+            TextFormField(
+              controller: emailController,
+              decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: kGreyColor,
                   ),
-                  hintText: 'email',
-                  prefixIcon: Icon(
+                ),
+                hintText: 'Email',
+                prefixIcon: Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Icon(
                     Icons.email,
                     size: 24,
                     color: kPrimaryColor,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
@@ -97,19 +143,22 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: [
             TextFormField(
-              controller: _cPassword,
+              controller: passwordController,
               obscureText: _isObscure,
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: kPrimaryColor,
+                    color: kGreyColor,
                   ),
                 ),
-                hintText: 'kata sandi',
-                prefixIcon: Icon(
-                  Icons.lock,
-                  size: 24,
-                  color: kPrimaryColor,
+                hintText: 'Kata sandi',
+                prefixIcon: Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Icon(
+                    Icons.lock,
+                    size: 25,
+                    color: kPrimaryColor,
+                  ),
                 ),
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -133,87 +182,60 @@ class _LoginPageState extends State<LoginPage> {
 
     Widget forgotPassword() {
       return Container(
-        width: double.infinity,
-        margin: const EdgeInsets.only(
-          left: 45,
-          right: 45,
-          top: 20,
-          bottom: 20,
-        ),
-        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-          Text(
-            'Lupa kata sandi? klik',
-            style: greyTextStyle,
-          ),
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'disini',
+        margin: const EdgeInsets.only(right: 45),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            CustomTac(
+              onPressed: () {
+                Navigator.pushNamed(context, '/register');
+              },
+              text2: 'Lupa kata sandi?',
             ),
-          )
-        ]),
+          ],
+        ),
       );
     }
 
     Widget buttonLogin() {
-      return CustomeButton(
-        text: 'Masuk',
-        onPressed: _login,
+      return isLoading
+          ? CustomeButton(
+              text: 'Loading',
+              onPressed: () {},
+              isLoading: true,
+            )
+          : CustomeButton(
+              text: 'Masuk',
+              onPressed: handleSignIn,
+              isLoading: false,
+            );
+    }
+
+    Widget signIn() {
+      return CustomTac(
+        onPressed: () {
+          Navigator.pushNamed(context, '/register');
+        },
+        text1: 'Belum punya akun? daftar ',
+        text2: 'Disini',
       );
     }
 
-    // digunakan untuk mereturn semua widget yang ada pada file login_page.dart
     return Scaffold(
-      bottomNavigationBar: BottomTextButton(
-        text: 'Belum punya akun? daftar',
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            '/register',
-          );
-        },
-      ),
       backgroundColor: kBackgroundColor,
-      body: ListView(
+      resizeToAvoidBottomInset: false,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           header(),
           emailInput(),
           passwordInput(),
           forgotPassword(),
           buttonLogin(),
+          const Spacer(),
+          signIn()
         ],
       ),
     );
-  }
-
-  Future<void> _login() async {
-    // setState(() => _onLoading = true);
-    LoginResponse response = await ApiClient.login(
-      LoginRequest(
-        email: _cEmail.text,
-        password: _cPassword.text,
-      ),
-    );
-    if (response.token != null) {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      await preferences.setString(AppConstant.loginKey, response.token!);
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => MainPage(
-            token: response.token!,
-          ),
-        ),
-        (Route<dynamic> route) => false,
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('Data yang anda masukan salah'),
-        ),
-      );
-    }
-    // setState(() => _onLoading = false);
   }
 }
