@@ -6,9 +6,11 @@ class CustomeButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final EdgeInsets margin;
   final bool isLoading;
+  final Color color;
   const CustomeButton({
     Key? key,
     required this.text,
+    required this.color,
     required this.onPressed,
     this.margin = EdgeInsets.zero,
     this.isLoading = false,
@@ -17,14 +19,17 @@ class CustomeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
       width: double.infinity,
       height: 50,
       decoration: BoxDecoration(
-        color: kPrimaryColor,
-        borderRadius: BorderRadius.circular(12),
+        // gradient: LinearGradient(
+        //   begin: Alignment.centerLeft,
+        //   end: Alignment.bottomRight,
+        //   colors: [kPrimaryColor, Colors.greenAccent],
+        // ),
+        color: color,
+        borderRadius: BorderRadius.circular(defaultRadius),
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 45),
       child: TextButton(
         onPressed: onPressed,
         child: Row(
@@ -37,7 +42,9 @@ class CustomeButton extends StatelessWidget {
                     margin: const EdgeInsets.only(right: 5),
                     child: CircularProgressIndicator(
                       strokeWidth: 3,
-                      valueColor: AlwaysStoppedAnimation(kWhiteColor),
+                      valueColor: AlwaysStoppedAnimation(
+                        kWhiteColor,
+                      ),
                     ),
                   )
                 : const SizedBox(),
@@ -45,7 +52,7 @@ class CustomeButton extends StatelessWidget {
               text,
               style: whiteTextStyle.copyWith(
                 fontSize: 16,
-                fontWeight: medium,
+                fontWeight: semiBold,
               ),
             )
           ],

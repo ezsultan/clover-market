@@ -9,13 +9,13 @@ class CategoryModel {
 
   CategoryModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['category_name'];
+    name = json['sub_category_name'];
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'category_name': name,
+      'sub_category_name': name,
     };
   }
 }

@@ -4,6 +4,7 @@ import 'package:clover/model/photo_model.dart';
 class ProductModel {
   int? id;
   String? name;
+  double? discount;
   double? price;
   String? description;
   CategoryModel? category;
@@ -12,18 +13,20 @@ class ProductModel {
   ProductModel({
     this.id,
     this.name,
+    this.discount,
     this.price,
     this.description,
     this.category,
     this.photos,
   });
 
-  ProductModel.fromJsonn(Map<String, dynamic> json) {
+  ProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['product_name'];
     price = double.parse(json['product_price'].toString());
+    discount = double.parse(json['product_discount'].toString());
     description = json['product_description'];
-    category = CategoryModel.fromJson(json['category']);
+    category = CategoryModel.fromJson(json['sub_category']);
     photos = json['photos']
         .map<PhotosModel>((photo) => PhotosModel.fromJson(photo))
         .toList();
@@ -33,9 +36,10 @@ class ProductModel {
     return {
       'id': id,
       'product_name': name,
+      'producut_discount': discount,
       'product_price': price,
       'product_description': description,
-      'category': category!.toJson(),
+      'sub_category': category!.toJson(),
       'photos': photos!.map((photo) => photo.toJson()).toList(),
     };
   }

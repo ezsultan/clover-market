@@ -1,8 +1,12 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, unused_field
 
+import 'package:clover/page/custom_text_button.dart';
+import 'package:clover/page/otp_register_page.dart';
 import 'package:clover/provider/auth_provider.dart';
-import 'package:clover/widget/bottom_textbutton.dart';
 import 'package:clover/widget/custom_button.dart';
+import 'package:clover/widget/custom_password_textfield.dart';
+import 'package:clover/widget/custom_tac_button.dart';
+import 'package:clover/widget/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../shared/theme.dart';
@@ -22,12 +26,15 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final TextEditingController passwordController =
       TextEditingController(text: '');
-  bool _isObscure = true;
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     AuthProvider authProvider = Provider.of<AuthProvider>(context);
     handleSignUp() async {
+      setState(() {
+        isLoading = true;
+      });
       bool? register = await authProvider.register(
         username: usernameController.text,
         email: emailController.text,
@@ -35,11 +42,14 @@ class _SignUpPageState extends State<SignUpPage> {
       );
 
       if (register ?? false) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          '/home',
-          (route) => false,
-        );
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OtpRegisterPage(
+                email: emailController.text,
+              ),
+            ),
+            (route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -52,195 +62,144 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         );
       }
+      setState(() {
+        isLoading = false;
+      });
     }
 
     Widget header() {
-      return Container(
-        margin: const EdgeInsets.only(
-          left: 45,
-          right: 45,
-          top: 100,
-          bottom: 30,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Image.asset(
-                'assets/icon_wortel.png',
-                width: 50,
-              ),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/logo.png',
+            width: 100,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Welcome to Clover',
+            style: blackTextStyle.copyWith(
+              fontSize: 18,
+              fontWeight: bold,
             ),
-            const SizedBox(
-              height: 80,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Sign in to continue',
+            style: greyTextStyle.copyWith(
+              fontSize: 14,
             ),
-            Text(
-              'Silahkan Daftar',
-              style: blackTextStyle.copyWith(
-                fontSize: 24,
-                fontWeight: bold,
-              ),
-            ),
-            Text(
-              'Silahkan daftar terlebih dahulu',
-              style: secondaryTextStyle.copyWith(
-                fontSize: 16,
-                fontWeight: medium,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       );
     }
 
-    Widget nameInput() {
-      return Container(
-        padding: const EdgeInsets.only(
-          left: 45,
-          right: 45,
-        ),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: usernameController,
-              decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: kSecondaryColor,
-                  ),
-                ),
-                hintText: 'Username',
-                prefixIcon: Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: Icon(
-                    Icons.person,
-                    size: 24,
-                    color: kPrimaryColor,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+    Widget content() {
+      Widget inputUsername() {
+        return CustomTextField(
+          imageUrl: 'assets/icon_user.png',
+          hintText: 'Username',
+          controller: usernameController,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'silahkan isi username terlebih dahulu';
+            }
+          },
+        );
+      }
+
+      Widget inputEmail() {
+        return CustomTextField(
+          imageUrl: 'assets/icon_email.png',
+          hintText: 'Email',
+          controller: emailController,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Silahkan isi email terlebih dahulu';
+            }
+          },
+        );
+      }
+
+      Widget inputPassword() {
+        return CustomPasswordTextfield(
+          imageUrl: 'assets/icon_password.png',
+          hintText: 'Password',
+          obscureText: false,
+          controller: passwordController,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Silahkan isi kata sandi terlebih dahulu';
+            }
+          },
+        );
+      }
+
+      return Column(
+        children: [
+          const SizedBox(height: 30),
+          inputUsername(),
+          const SizedBox(height: 20),
+          inputEmail(),
+          const SizedBox(height: 20),
+          inputPassword(),
+        ],
       );
     }
 
-    // ini adalah widget untuk menampilkan field berupa inputan
-    Widget emailInput() {
-      return Form(
-        child: Container(
-          padding: const EdgeInsets.only(
-            top: 20,
-            left: 45,
-            right: 45,
-          ),
-          child: Column(
-            children: [
-              TextFormField(
-                controller: emailController,
-                decoration: InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: kPrimaryColor,
-                    ),
-                  ),
-                  hintText: 'Email',
-                  prefixIcon: Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: Icon(
-                      Icons.email,
-                      size: 24,
-                      color: kPrimaryColor,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    Widget passwordInput() {
-      return Form(
-        child: Container(
-          padding: const EdgeInsets.only(
-            top: 20,
-            left: 45,
-            right: 45,
-            bottom: 50,
-          ),
-          child: Column(
-            children: [
-              TextFormField(
-                controller: passwordController,
-                obscureText: _isObscure,
-                decoration: InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: kPrimaryColor,
-                    ),
-                  ),
-                  hintText: 'Kata sandi',
-                  prefixIcon: Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: Icon(
-                      Icons.lock,
-                      size: 24,
-                      color: kPrimaryColor,
-                    ),
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isObscure ? Icons.visibility : Icons.visibility_off,
-                      color: kPrimaryColor,
-                    ),
-                    onPressed: () {
-                      setState(
-                        () {
-                          _isObscure = !_isObscure;
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    // ini adalah wodget untuk tombol masuk
     Widget buttonRegister() {
-      return CustomeButton(
-        text: 'Daftar',
-        onPressed: handleSignUp,
+      return isLoading
+          ? CustomeButton(
+              text: 'Loading',
+              onPressed: () {},
+              isLoading: true,
+              color: kPrimaryColor,
+            )
+          : CustomeButton(
+              text: 'Masuk',
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  handleSignUp();
+                }
+              },
+              isLoading: false,
+              color: kPrimaryColor,
+            );
+    }
+
+    Widget bottomContent() {
+      return CustomTacButton(
+        text: 'Don\'t have an account? ',
+        button: 'Login',
+        onPressed: () {
+          Navigator.pushNamed(context, '/login');
+        },
       );
     }
 
-    //Widget for all content
     return Scaffold(
-      bottomNavigationBar: BottomTextButton(
-        text: 'Sudah punya akun? masuk',
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            '/login',
-          );
-        },
-      ),
+      resizeToAvoidBottomInset: false,
       backgroundColor: kBackgroundColor,
       body: SafeArea(
-        child: ListView(
-          children: [
-            header(),
-            nameInput(),
-            emailInput(),
-            passwordInput(),
-            buttonRegister(),
-          ],
+        child: Form(
+          key: _formKey,
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: defaultMargin,
+            ),
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                header(),
+                content(),
+                const SizedBox(height: 30),
+                buttonRegister(),
+                const Spacer(),
+                bottomContent(),
+                const SizedBox(height: 30),
+              ],
+            ),
+          ),
         ),
       ),
     );

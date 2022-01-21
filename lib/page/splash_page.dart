@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:clover/page/login_page.dart';
+import 'package:clover/page/main_page.dart';
+import 'package:clover/provider/auth_provider.dart';
 import 'package:clover/provider/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:clover/shared/theme.dart';
@@ -13,13 +18,40 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-    getInit();
     super.initState();
+    checkToken();
   }
 
   getInit() async {
     await Provider.of<ProductProvider>(context, listen: false).getProducts();
-    Navigator.pushNamed(context, '/started');
+  }
+
+  checkToken() async {
+    await getInit();
+    AuthProvider authProvider =
+        Provider.of<AuthProvider>(context, listen: false);
+    bool hasil = await authProvider.checkToken();
+    print(hasil);
+    print(authProvider.token?.token);
+    if (hasil) {
+      return Timer(
+        const Duration(seconds: 1),
+        () => Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const MainPage(),
+          ),
+        ),
+      );
+    } else {
+      return Timer(
+        const Duration(seconds: 1),
+        () => Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const LoginPage(),
+          ),
+        ),
+      );
+    }
   }
 
   @override

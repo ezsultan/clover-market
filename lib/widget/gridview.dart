@@ -1,77 +1,120 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:clover/model/product_model.dart';
+import 'package:clover/page/detail_product_page.dart';
 import 'package:flutter/material.dart';
 import '../shared/theme.dart';
 
 class GridViewProduct extends StatelessWidget {
-  final String title;
-  final String imageUrl;
-  final String price;
-  final Function()? ontap;
-  const GridViewProduct(
-      {Key? key,
-      this.ontap,
-      required this.title,
-      required this.imageUrl,
-      required this.price})
-      : super(key: key);
+  final ProductModel product;
+  const GridViewProduct({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, '/detail');
-        },
-        child: Container(
-          padding: const EdgeInsets.all(13),
-          decoration: BoxDecoration(
-            color: kWhiteColor,
-            borderRadius: BorderRadius.circular(
-              defaultRadius,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: kGreyColor.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: 1,
-                offset: const Offset(0, 2),
-              ),
-            ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailProduct(product: product),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image(
-                image: AssetImage(
-                  imageUrl,
-                ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: kWhiteColor,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(1),
+              spreadRadius: 1,
+              blurRadius: 1,
+              offset: Offset.infinite,
+            ),
+          ],
+          border: Border.all(color: Colors.black12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(5),
+              width: double.infinity,
+              height: 130,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: kBackgroundColor,
+                // image: DecorationImage(
+                //   image: NetworkImage(
+                //     product.photos![0].url!,
+                //   ),
+                // ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
+              child: CachedNetworkImage(
+                imageUrl: product.photos![0].url!,
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+              ),
+            ),
+            Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(10),
+                ),
+                Expanded(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(height: 5),
                       Text(
-                        title,
-                        style: blackTextStyle.copyWith(
-                            fontSize: 16, fontWeight: bold),
+                        product.name!,
+                        style: blackTextStyle.copyWith(fontWeight: semiBold),
+                        maxLines: 1,
                       ),
                       Text(
-                        price,
+                        product.category!.name!,
+                        style: greyTextStyle.copyWith(
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'Rp ${product.price!.round().toString()}',
                         style: greenTextStyle.copyWith(
-                          fontWeight: bold,
+                          fontSize: 14,
+                          fontWeight: semiBold,
                         ),
                       ),
                     ],
                   ),
-                  Icon(
-                    Icons.add_shopping_cart,
-                    color: kPrimaryColor,
-                  ),
-                ],
-              )
-            ],
-          ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(
+                      right: 15,
+                      top: 25,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerRight,
+                        end: Alignment.topLeft,
+                        colors: [kPrimaryColor, Colors.greenAccent],
+                      ),
+                      shape: BoxShape.circle,
+                      color: kPrimaryColor,
+                    ),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Icon(
+                        Icons.add,
+                        color: kWhiteColor,
+                        size: 24,
+                      ),
+                    )),
+              ],
+            )
+          ],
         ),
       ),
     );

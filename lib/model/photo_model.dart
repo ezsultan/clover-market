@@ -9,13 +9,13 @@ class PhotosModel {
 
   PhotosModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    url = json['path_to_product_image'];
+    url = json['product_image_path'];
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'path_to_product_image': url,
+      'product_image_path': url,
     };
   }
 }

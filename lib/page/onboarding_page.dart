@@ -24,9 +24,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   // List of descriptions
   List<String> descriptions = [
-    'Clover menggunakan metode modern',
-    'Clover terhubung langsung\ndengan petani',
-    'Clover menghasilkan tanaman\nyang anda butuhkan dengan\nkondisi dan kualitas terbaik',
+    'Menggunakan metode terkini sehingga menghasilkan buah dan sayuran yang segar dan higenis',
+    'Buah dan sayuran di hasilkan dari seluruh petani terbaik di indonesia',
+    'Produk yang kami hasilkan dapat kami pastikan berkualitas dan segar karena telah melalui pengecekan terlebih dahulu',
   ];
 
   // List of images path
@@ -94,8 +94,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
             // Top Components
             Container(
-              padding: const EdgeInsets.all(
-                24,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 10,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -125,7 +126,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           child: const Text(
                             'Lewati',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                             ),
                           ),
                         )

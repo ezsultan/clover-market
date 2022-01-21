@@ -1,4 +1,5 @@
 import 'package:clover/widget/custom_button.dart';
+import 'package:clover/widget/custom_cart_tile.dart';
 import 'package:flutter/material.dart';
 import '../shared/theme.dart';
 
@@ -9,18 +10,19 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     AppBar _buildAppbar() {
       return AppBar(
-        leading: BackButton(
+        leading: IconButton(
           onPressed: () {
-            Navigator.pop(
-              context,
-            );
+            Navigator.pop(context);
           },
+          icon: const Icon(
+            Icons.chevron_left,
+          ),
         ),
         foregroundColor: kBlackColor,
         title: Text(
           'Keranjang',
           style: blackTextStyle.copyWith(
-            fontSize: 20,
+            fontSize: 16,
             fontWeight: semiBold,
           ),
         ),
@@ -29,110 +31,148 @@ class CartPage extends StatelessWidget {
       );
     }
 
-    Widget cartItems() {
-      return Container(
-        width: double.infinity,
-        height: 130,
-        margin: const EdgeInsets.only(
-          left: 30,
-          right: 30,
-          top: 20,
-          bottom: 10,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 10,
-        ),
-        decoration: BoxDecoration(
-          color: kWhiteColor,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
+    Widget emptyCart() {
+      return Center(
+        child: Column(
           children: [
-            Container(
-              width: 100,
+            const SizedBox(
               height: 100,
-              margin: const EdgeInsets.only(
-                right: 15,
-              ),
-              decoration: BoxDecoration(
-                color: kBackgroundColor,
-                borderRadius: BorderRadius.circular(
-                  18,
-                ),
-              ),
-              child: Center(
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(
-                        'assets/jeruk.png',
-                      ),
-                    ),
-                  ),
-                ),
+            ),
+            Image.asset(
+              'assets/empty_cart.png',
+              width: 70,
+              color: kRedColor,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Text(
+              'oops!',
+              style: blackTextStyle.copyWith(
+                fontSize: 18,
+                fontWeight: bold,
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Jeruk',
-                  style: blackTextStyle.copyWith(
-                    fontSize: 16,
-                    fontWeight: semiBold,
-                  ),
-                ),
-                Text(
-                  '15000/kg',
-                  style: greenTextStyle.copyWith(
-                    fontSize: 18,
-                    fontWeight: bold,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Image.asset(
-                        'assets/Groupmin.png',
-                        width: 24,
-                        color: kGreyColor,
-                      ),
-                    ),
-                    Container(
-                      width: 30,
-                      height: 30,
-                      decoration: const BoxDecoration(),
-                      child: const Center(
-                        child: Text('1'),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Image.asset(
-                        'assets/Groupplus.png',
-                        width: 24,
-                        color: kPrimaryColor,
-                      ),
-                    ),
-                  ],
-                )
-              ],
+            const SizedBox(
+              height: 10,
             ),
-            const Spacer(),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.delete_forever,
-                size: 30,
-                color: Colors.red,
+            const Text(
+              'Keranjang anda kosong!\nTemukan produk yang anda inginkan',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 70,
+              ),
+              child: CustomeButton(
+                  text: 'Cari produk',
+                  color: kPrimaryColor,
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/home',
+                    );
+                  }),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget content() {
+      return ListView(
+        children: const [
+          CartTile(
+            imageUrl: 'assets/labu.png',
+            price: 'Rp 9999',
+            title: 'Ini tu labuh',
+            qty: '2',
+          ),
+          CartTile(
+            imageUrl: 'assets/labu.png',
+            price: 'Rp 9999',
+            title: 'Ini tu labuh',
+            qty: '2',
+          ),
+          CartTile(
+            imageUrl: 'assets/labu.png',
+            price: 'Rp 9999',
+            title: 'Ini tu labuh',
+            qty: '2',
+          ),
+          CartTile(
+            imageUrl: 'assets/labu.png',
+            price: 'Rp 9999',
+            title: 'Ini tu labuh',
+            qty: '2',
+          ),
+          CartTile(
+            imageUrl: 'assets/labu.png',
+            price: 'Rp 9999',
+            title: 'Ini tu labuh',
+            qty: '2',
+          ),
+          CartTile(
+            imageUrl: 'assets/labu.png',
+            price: 'Rp 9999',
+            title: 'Ini tu labuh',
+            qty: '2',
+          ),
+          CartTile(
+            imageUrl: 'assets/labu.png',
+            price: 'Rp 9999',
+            title: 'Ini tu labuh',
+            qty: '2',
+          ),
+        ],
+      );
+    }
+
+    Widget customBottomNavbar() {
+      return SizedBox(
+        height: 180,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Subtotal',
+                    style: greenTextStyle,
+                  ),
+                  Text(
+                    '9999',
+                    style: greyTextStyle.copyWith(
+                      fontSize: 16,
+                      fontWeight: semiBold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Divider(
+              thickness: 1,
+              color: borderColor,
+            ),
+            Container(
+              height: 50,
+              margin: EdgeInsets.symmetric(
+                horizontal: defaultMargin,
+                vertical: defaultMargin,
+              ),
+              child: CustomeButton(
+                text: 'Lanjutkan transaksi',
+                color: kPrimaryColor,
+                onPressed: () {},
               ),
             ),
           ],
@@ -141,18 +181,15 @@ class CartPage extends StatelessWidget {
     }
 
     return Scaffold(
-      bottomNavigationBar: CustomeButton(
-        text: 'Lanjutkan Transaksi',
-        onPressed: () {},
-      ),
+      backgroundColor: kBackgroundColor,
+      // bottomNavigationBar: CustomeButton(
+      //   text: 'Lanjutkan Transaksi',
+      //   onPressed: () {},
+      //   color: kPrimaryColor,
+      // ),
       appBar: _buildAppbar(),
-      body: ListView(
-        children: [
-          cartItems(),
-          cartItems(),
-          cartItems(),
-        ],
-      ),
+      body: content(),
+      bottomNavigationBar: customBottomNavbar(),
     );
   }
 }

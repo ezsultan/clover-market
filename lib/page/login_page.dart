@@ -1,7 +1,13 @@
+// ignore_for_file: unnecessary_import
+
+import 'package:clover/page/custom_text_button.dart';
 import 'package:clover/provider/auth_provider.dart';
-import 'package:clover/shared/custom_tac.dart';
 import 'package:clover/shared/theme.dart';
 import 'package:clover/widget/custom_button.dart';
+import 'package:clover/widget/custom_button_oauth.dart';
+import 'package:clover/widget/custom_password_textfield.dart';
+import 'package:clover/widget/custom_tac_button.dart';
+import 'package:clover/widget/custom_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -17,7 +23,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool _isObscure = true;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   bool isLoading = false;
 
   @override
@@ -59,141 +66,67 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     Widget header() {
-      return Container(
-        margin: const EdgeInsets.only(
-          left: 45,
-          right: 45,
-          top: 100,
-          bottom: 30,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Image.asset(
-                'assets/icon_wortel.png',
-                width: 50,
-              ),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/logo.png',
+            width: 100,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Welcome to Clover',
+            style: blackTextStyle.copyWith(
+              fontSize: 18,
+              fontWeight: bold,
             ),
-            const SizedBox(
-              height: 80,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Sign in to continue',
+            style: greyTextStyle.copyWith(
+              fontSize: 14,
             ),
-            Text(
-              'Login',
-              style: blackTextStyle.copyWith(
-                fontSize: 24,
-                fontWeight: bold,
-              ),
-            ),
-            Text(
-              'Masukan email dan password',
-              style: greenTextStyle.copyWith(
-                fontSize: 16,
-                fontWeight: medium,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       );
     }
 
-    // ini adalah widget untuk menampilkan field berupa inputan
-    Widget emailInput() {
-      return Container(
-        padding: const EdgeInsets.only(
-          left: 45,
-          right: 45,
-        ),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: emailController,
-              decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: kGreyColor,
-                  ),
-                ),
-                hintText: 'Email',
-                prefixIcon: Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: Icon(
-                    Icons.email,
-                    size: 24,
-                    color: kPrimaryColor,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+    Widget content() {
+      Widget inputEmail() {
+        return CustomTextField(
+          imageUrl: 'assets/icon_email.png',
+          hintText: 'Email',
+          controller: emailController,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Silahkan isi email terlebih dahulu';
+            }
+          },
+        );
+      }
 
-    Widget passwordInput() {
-      return Container(
-        margin: const EdgeInsets.only(
-          top: 20,
-        ),
-        padding: const EdgeInsets.only(
-          left: 45,
-          right: 45,
-        ),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: passwordController,
-              obscureText: _isObscure,
-              decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: kGreyColor,
-                  ),
-                ),
-                hintText: 'Kata sandi',
-                prefixIcon: Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: Icon(
-                    Icons.lock,
-                    size: 25,
-                    color: kPrimaryColor,
-                  ),
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _isObscure ? Icons.visibility : Icons.visibility_off,
-                    color: kPrimaryColor,
-                  ),
-                  onPressed: () {
-                    setState(
-                      () {
-                        _isObscure = !_isObscure;
-                      },
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+      Widget inputPassword() {
+        return CustomPasswordTextfield(
+          imageUrl: 'assets/icon_password.png',
+          hintText: 'Password',
+          obscureText: false,
+          controller: passwordController,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Silahkan isi kata sandi terlebih dahulu';
+            }
+          },
+        );
+      }
 
-    Widget forgotPassword() {
-      return Container(
-        margin: const EdgeInsets.only(right: 45),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            CustomTac(
-              onPressed: () {
-                Navigator.pushNamed(context, '/register');
-              },
-              text2: 'Lupa kata sandi?',
-            ),
-          ],
-        ),
+      return Column(
+        children: [
+          const SizedBox(height: 30),
+          inputEmail(),
+          const SizedBox(height: 20),
+          inputPassword(),
+        ],
       );
     }
 
@@ -203,38 +136,123 @@ class _LoginPageState extends State<LoginPage> {
               text: 'Loading',
               onPressed: () {},
               isLoading: true,
+              color: kPrimaryColor,
             )
           : CustomeButton(
               text: 'Masuk',
-              onPressed: handleSignIn,
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  handleSignIn();
+                }
+              },
               isLoading: false,
+              color: kPrimaryColor,
             );
     }
 
-    Widget signIn() {
-      return CustomTac(
-        onPressed: () {
-          Navigator.pushNamed(context, '/register');
-        },
-        text1: 'Belum punya akun? daftar ',
-        text2: 'Disini',
+    Widget divider() {
+      return Row(children: [
+        const Expanded(
+          child: Divider(),
+        ),
+        const SizedBox(width: 20),
+        Text(
+          'OR',
+          style: greyTextStyle.copyWith(
+            fontSize: 12,
+            fontWeight: bold,
+          ),
+        ),
+        const SizedBox(width: 20),
+        const Expanded(
+          child: Divider(),
+        ),
+      ]);
+    }
+
+    Widget buttonOauth() {
+      Widget buttonGoogle() {
+        return CustomButtonOauth(
+          text: 'Login with google',
+          onPressed: () {},
+          imageUrl: 'assets/icon_google.png',
+        );
+      }
+
+      Widget buttonFacebook() {
+        return CustomButtonOauth(
+          text: 'Login with google',
+          onPressed: () {},
+          imageUrl: 'assets/icon_facebook.png',
+        );
+      }
+
+      return Column(
+        children: [
+          buttonGoogle(),
+          const SizedBox(height: 8),
+          buttonFacebook(),
+        ],
+      );
+    }
+
+    Widget bottomContent() {
+      Widget forgotPasswordButton() {
+        return const CustomTextButton(
+          text: 'Forgot Password',
+        );
+      }
+
+      Widget tacButton() {
+        return CustomTacButton(
+          text: 'Don\'t have an account? ',
+          button: 'Register',
+          onPressed: () {
+            Navigator.pushNamed(context, '/register');
+          },
+        );
+      }
+
+      return Column(
+        children: [
+          const SizedBox(height: 16),
+          forgotPasswordButton(),
+          const SizedBox(height: 8),
+          tacButton(),
+        ],
       );
     }
 
     return Scaffold(
       backgroundColor: kBackgroundColor,
       resizeToAvoidBottomInset: false,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          header(),
-          emailInput(),
-          passwordInput(),
-          forgotPassword(),
-          buttonLogin(),
-          const Spacer(),
-          signIn()
-        ],
+      body: SafeArea(
+        child: Form(
+          key: _formKey,
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: defaultMargin,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                header(),
+                const SizedBox(height: 30),
+                content(),
+                const SizedBox(height: 20),
+                buttonLogin(),
+                const SizedBox(height: 20),
+                divider(),
+                const SizedBox(height: 20),
+                buttonOauth(),
+                const Spacer(),
+                bottomContent(),
+                const SizedBox(height: 30),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -2,30 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 double defaultMargin = 24.0;
-double defaultRadius = 14;
+double defaultRadius = 5;
 
 Color kPrimaryColor = const Color(0xff53B175);
-Color kSecondaryColor = const Color(0xff7C7C7C);
+Color kSecondaryColor = const Color(0xffF6F6F6);
 Color kWhiteColor = const Color(0xffFFFFFF);
 Color kBlackColor = const Color(0xff181725);
 Color kGreyColor = const Color(0xff9698A9);
 Color kInactiveColor = const Color(0xffDBD7EC);
-Color kRedColor = const Color(0xff0EC3AE);
-Color kBlueColor = const Color(0xff5C40CC);
+Color kRedColor = const Color(0xffFB7181);
+Color kBlueColor = const Color(0xff40BFFF);
 Color kGreenColor = const Color(0xffEB70A5);
-Color kBackgroundColor = const Color(0xffFAFAFA);
+Color kBackgroundColor = const Color(0xffFFFFFF);
 Color kTransparenColor = Colors.transparent;
 Color kAvailableColor = const Color(0xFFE0D9FF);
 Color kUnavailableColor = const Color(0xFFEBECF1);
-Color kCardColor = const Color(0xffFFFFFF);
+Color borderColor = const Color(0xffEBF0FF);
+Color cardColor = const Color(0xffEAEAEA);
 
-TextStyle purpleTextStyle = GoogleFonts.poppins(color: kPrimaryColor);
-TextStyle blackTextStyle = GoogleFonts.poppins(color: kBlackColor);
-TextStyle whiteTextStyle = GoogleFonts.poppins(color: kWhiteColor);
-TextStyle greyTextStyle = GoogleFonts.poppins(color: kGreyColor);
-TextStyle greenTextStyle = GoogleFonts.poppins(color: kPrimaryColor);
-TextStyle blueTextStyle = GoogleFonts.poppins(color: kBlueColor);
-TextStyle secondaryTextStyle = GoogleFonts.poppins(color: kSecondaryColor);
+TextStyle purpleTextStyle = GoogleFonts.lato(color: kPrimaryColor);
+TextStyle blackTextStyle = GoogleFonts.lato(color: kBlackColor);
+TextStyle whiteTextStyle = GoogleFonts.lato(color: kWhiteColor);
+TextStyle greyTextStyle = GoogleFonts.lato(color: kGreyColor);
+TextStyle greenTextStyle = GoogleFonts.lato(color: kPrimaryColor);
+TextStyle blueTextStyle = GoogleFonts.lato(color: kBlueColor);
+TextStyle secondaryTextStyle = GoogleFonts.lato(color: kSecondaryColor);
 
 FontWeight light = FontWeight.w300;
 FontWeight regular = FontWeight.w400;

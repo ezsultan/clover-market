@@ -1,67 +1,129 @@
-import 'package:clover/shared/theme.dart';
-import 'package:clover/widget/profile_tile.dart';
-import 'package:flutter/material.dart';
+// ignore_for_file: unused_import
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+import 'package:clover/provider/auth_provider.dart';
+import 'package:clover/shared/theme.dart';
+import 'package:clover/widget/custom_profile_tile.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Widget image() {
-      return Container(
-        width: 90,
-        height: 90,
-        margin: const EdgeInsets.only(
-          top: 30,
-          bottom: 30,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          image: const DecorationImage(
-            image: AssetImage(
-              'assets/profile.jpg',
+    // AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    Widget header() {
+      return Row(
+        children: [
+          Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              color: kBlackColor,
+              borderRadius: BorderRadius.circular(90),
+              image: const DecorationImage(
+                image: AssetImage(
+                  'assets/avatar.jpg',
+                ),
+              ),
             ),
           ),
-        ),
+          const SizedBox(width: 15),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'EZ',
+                style: blackTextStyle.copyWith(
+                  fontWeight: bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '@Sultan',
+                style: blackTextStyle.copyWith(
+                  fontSize: 12,
+                  fontWeight: light,
+                ),
+              ),
+            ],
+          ),
+        ],
       );
     }
 
-    Widget profileTile() {
+    Widget content() {
       return Column(
         children: const [
-          ProfileTile(),
+          CustomProfileTile(
+            title: 'Gender',
+            iconUrl: 'assets/Gender.png',
+            information: 'Male',
+          ),
+          CustomProfileTile(
+            title: 'Birthday',
+            iconUrl: 'assets/Date.png',
+            information: '08-09-2002',
+          ),
+          CustomProfileTile(
+            title: 'Email',
+            iconUrl: 'assets/Message.png',
+            information: 'Email',
+          ),
+          CustomProfileTile(
+            title: 'Phone Number',
+            iconUrl: 'assets/Phone.png',
+            information: 'Male',
+          ),
+          CustomProfileTile(
+            title: 'Change Password',
+            iconUrl: 'assets/Password.png',
+            information: '....................',
+          ),
         ],
       );
     }
 
     return Scaffold(
-      backgroundColor: kBackgroundColor,
       appBar: AppBar(
-        centerTitle: true,
         title: Text(
           'Profile',
           style: blackTextStyle.copyWith(
-            fontSize: 18,
-            fontWeight: semiBold,
+            fontWeight: bold,
+            fontSize: 16,
           ),
         ),
-        backgroundColor: kBackgroundColor,
+        bottom: PreferredSize(
+            child: Container(
+              height: 1,
+              color: borderColor,
+            ),
+            preferredSize: const Size.fromHeight(1)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
-          icon: Icon(
-            Icons.navigate_before,
-            color: kBlackColor,
-          ),
           onPressed: () {
             Navigator.pop(context);
           },
+          icon: Icon(
+            Icons.chevron_left,
+            color: kBlackColor,
+          ),
         ),
-        elevation: 0,
       ),
-      body: Column(
-        children: [
-          image(),
-          profileTile(),
-        ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: defaultMargin,
+          vertical: 24,
+        ),
+        child: Column(
+          children: [
+            header(),
+            const SizedBox(height: 30),
+            content(),
+          ],
+        ),
       ),
     );
   }
