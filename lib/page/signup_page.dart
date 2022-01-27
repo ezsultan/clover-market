@@ -55,7 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
         Get.snackbar(
           'Gagal daftar',
           'Pastikan data anda benar',
-          icon: Icon(
+          icon: const Icon(
             Icons.warning,
           ),
           backgroundColor: kRedColor,

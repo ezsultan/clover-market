@@ -2,11 +2,13 @@ import 'package:clover/shared/theme.dart';
 import 'package:flutter/material.dart';
 
 class CustomAboutTile extends StatelessWidget {
-  final String iconUrl;
+  final IconData? icon;
+  final String? iconUrl;
   final String title;
   final VoidCallback onPressed;
   const CustomAboutTile({
-    required this.iconUrl,
+    this.icon,
+    this.iconUrl,
     required this.title,
     required this.onPressed,
     Key? key,
@@ -29,11 +31,16 @@ class CustomAboutTile extends StatelessWidget {
           children: [
             Row(
               children: [
-                Image.asset(
-                  iconUrl,
-                  width: 22,
-                  color: kPrimaryColor,
-                ),
+                icon == null
+                    ? Image.asset(
+                        iconUrl!,
+                        width: 22,
+                        color: kPrimaryColor,
+                      )
+                    : Icon(
+                        icon,
+                        color: kPrimaryColor,
+                      ),
                 const SizedBox(
                   width: 15,
                 ),

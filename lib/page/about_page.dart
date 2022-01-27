@@ -1,22 +1,19 @@
-import 'package:clover/provider/auth_provider.dart';
 import 'package:clover/services/auth_services.dart';
 import 'package:clover/shared/theme.dart';
 import 'package:clover/widget/custom_about_tile.dart';
 import 'package:clover/widget/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider authProvider = Provider.of<AuthProvider>(context);
     handleLogout() async {
       bool? logout = await AuthServices().removeToken();
       if (logout ?? true) {
         Navigator.pushNamed(context, '/login');
-        print(authProvider.token?.token);
+        // print(authProvider.token?.token);
       }
     }
 
@@ -25,24 +22,24 @@ class AboutPage extends StatelessWidget {
         children: [
           CustomAboutTile(
             iconUrl: 'assets/User.png',
-            title: 'Profile',
+            title: 'Profil',
             onPressed: () {
               Navigator.pushNamed(context, '/profile');
             },
           ),
           CustomAboutTile(
-            iconUrl: 'assets/bag.png',
-            title: 'Order',
-            onPressed: () {},
-          ),
-          CustomAboutTile(
             iconUrl: 'assets/Location.png',
-            title: 'Address',
+            title: 'Alamat',
             onPressed: () {},
           ),
           CustomAboutTile(
             iconUrl: 'assets/card.png',
-            title: 'Payment',
+            title: 'Pembayaran',
+            onPressed: () {},
+          ),
+          CustomAboutTile(
+            icon: Icons.settings_outlined,
+            title: 'Pengaturan',
             onPressed: () {},
           ),
         ],
@@ -63,10 +60,11 @@ class AboutPage extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: kBackgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Account',
+          'Akun',
           style: blackTextStyle.copyWith(
             fontWeight: bold,
             fontSize: 18,

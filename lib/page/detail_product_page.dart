@@ -115,9 +115,10 @@ class _DetailProductState extends State<DetailProduct> {
                     Get.snackbar(
                       'Selamat',
                       'Produk berhasil ditambahkan',
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.done,
                       ),
+                      duration: const Duration(seconds: 1),
                     );
                   },
                   icon: Icon(
@@ -221,6 +222,46 @@ class _DetailProductState extends State<DetailProduct> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/cart');
+            },
+            icon: Icon(
+              Icons.shopping_cart_outlined,
+              color: kPrimaryColor,
+              size: 30,
+            ),
+          )
+        ],
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Produk',
+          style: blackTextStyle.copyWith(
+            fontWeight: bold,
+            fontSize: 18,
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.chevron_left,
+            color: kBlackColor,
+            size: 30,
+          ),
+        ),
+        bottom: PreferredSize(
+            child: Container(
+              height: 1,
+              color: borderColor,
+            ),
+            preferredSize: const Size.fromHeight(5)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       backgroundColor: kBackgroundColor,
       bottomNavigationBar: Padding(
         padding: EdgeInsets.fromLTRB(

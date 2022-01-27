@@ -57,27 +57,17 @@ class ProfileScreen extends StatelessWidget {
       return Column(
         children: const [
           CustomProfileTile(
-            title: 'Gender',
-            iconUrl: 'assets/Gender.png',
-            information: 'Male',
-          ),
-          CustomProfileTile(
-            title: 'Birthday',
-            iconUrl: 'assets/Date.png',
-            information: '08-09-2002',
-          ),
-          CustomProfileTile(
             title: 'Email',
             iconUrl: 'assets/Message.png',
             information: 'Email',
           ),
           CustomProfileTile(
-            title: 'Phone Number',
+            title: 'Telepon',
             iconUrl: 'assets/Phone.png',
-            information: 'Male',
+            information: '+6283819927809',
           ),
           CustomProfileTile(
-            title: 'Change Password',
+            title: 'Ubah kata sandi',
             iconUrl: 'assets/Password.png',
             information: '....................',
           ),

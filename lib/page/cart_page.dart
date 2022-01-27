@@ -91,9 +91,11 @@ class CartPage extends StatelessWidget {
     Widget content() {
       return ListView(
         children: cartProvider.cart
-            .map((cart) => CartTile(
-                  cart: cart,
-                ))
+            .map(
+              (cart) => CartTile(
+                cart: cart,
+              ),
+            )
             .toList(),
       );
     }
@@ -143,7 +145,9 @@ class CartPage extends StatelessWidget {
               child: CustomeButton(
                 text: 'Lanjutkan transaksi',
                 color: kPrimaryColor,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/transaction');
+                },
               ),
             ),
           ],
@@ -154,8 +158,10 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: _buildAppbar(),
-      body: content(),
-      bottomNavigationBar: customBottomNavbar(),
+      body: cartProvider.cart.isNotEmpty ? content() : emptyCart(),
+      bottomNavigationBar: cartProvider.cart.isNotEmpty
+          ? customBottomNavbar()
+          : const SizedBox(),
     );
   }
 }

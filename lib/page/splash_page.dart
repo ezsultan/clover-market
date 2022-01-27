@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:clover/page/login_page.dart';
 import 'package:clover/page/main_page.dart';
+import 'package:clover/page/onboarding_page.dart';
 import 'package:clover/provider/auth_provider.dart';
 import 'package:clover/provider/product_provider.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +32,8 @@ class _SplashPageState extends State<SplashPage> {
     AuthProvider authProvider =
         Provider.of<AuthProvider>(context, listen: false);
     bool hasil = await authProvider.checkToken();
-    print(hasil);
-    print(authProvider.token?.token);
+    // print(hasil);
+    // print(authProvider.token?.token);
     if (hasil) {
       return Timer(
         const Duration(seconds: 1),
@@ -47,7 +48,7 @@ class _SplashPageState extends State<SplashPage> {
         const Duration(seconds: 1),
         () => Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const LoginPage(),
+            builder: (context) => const OnBoardingScreen(),
           ),
         ),
       );
