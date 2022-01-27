@@ -1,16 +1,14 @@
-# clover
+Clover is a marketplace that focuses on agricultural products. Starting from fruit, vegetables, or
+hydroponic plants.
 
-A new Flutter project.
+Using
+1. Flutter SDK
+2. Provider State Management
+3. GetX
+4. Shared Preferences
 
-## Getting Started
+Done
+1. Auth with email verification
+2. Homepage product integrated to API
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Status : in development
