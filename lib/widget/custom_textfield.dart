@@ -38,8 +38,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
               obscureText: widget.obscureText,
               controller: widget.controller,
               decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: borderColor,
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(
+                    defaultRadius,
+                  ),
+                ),
                 errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: borderColor),
+                  borderSide: BorderSide(
+                    color: borderColor,
+                    width: 1,
+                  ),
                   borderRadius: BorderRadius.circular(defaultRadius),
                 ),
                 focusedBorder: OutlineInputBorder(

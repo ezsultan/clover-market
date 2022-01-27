@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clover/model/product_model.dart';
 import 'package:clover/page/detail_product_page.dart';
 import 'package:clover/shared/theme.dart';
@@ -31,7 +32,7 @@ class _RecomendedProductTileState extends State<RecomendedProductTile> {
         width: 140,
         decoration: BoxDecoration(
           color: kBackgroundColor,
-          border: Border.all(color: borderColor),
+          border: Border.all(color: kProductColor),
           borderRadius: BorderRadius.circular(defaultRadius),
         ),
         child: Padding(
@@ -46,9 +47,12 @@ class _RecomendedProductTileState extends State<RecomendedProductTile> {
                   color: borderColor,
                   borderRadius: BorderRadius.circular(defaultRadius),
                   image: DecorationImage(
-                    image: NetworkImage(
+                    image: CachedNetworkImageProvider(
                       widget.product.photos![0].url!,
                     ),
+                    // image: NetworkImage(
+                    //   widget.product.photos![0].url!,
+                    // ),
                     fit: BoxFit.cover,
                   ),
                 ),

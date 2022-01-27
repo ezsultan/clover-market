@@ -39,9 +39,19 @@ class _CustomPasswordTextfieldState extends State<CustomPasswordTextfield> {
               obscureText: _isObscure,
               controller: widget.controller,
               decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: borderColor,
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(
+                    defaultRadius,
+                  ),
+                ),
                 errorBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: borderColor,
+                    width: 0.5,
                   ),
                   borderRadius: BorderRadius.circular(
                     defaultRadius,

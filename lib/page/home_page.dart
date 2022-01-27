@@ -2,6 +2,7 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clover/model/user_model.dart';
+import 'package:clover/page/cart_page.dart';
 import 'package:clover/provider/auth_provider.dart';
 import 'package:clover/provider/product_provider.dart';
 import 'package:clover/widget/custom_countdown_card.dart';
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Expanded(
               child: CustomTextField(
-                hintText: 'Search Product',
+                hintText: 'Cari produk',
                 imageUrl: 'assets/icon_search.png',
                 color: kPrimaryColor,
               ),
@@ -59,10 +60,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(width: 16),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  '/cart',
-                );
+                Navigator.pushNamed(context, '/cart');
               },
               child: Image.asset(
                 'assets/icon_cart.png',
@@ -108,6 +106,10 @@ class _HomePageState extends State<HomePage> {
                           image: DecorationImage(
                             image: AssetImage(
                               item,
+                            ),
+                            colorFilter: ColorFilter.mode(
+                              kBlackColor.withOpacity(0.9),
+                              BlendMode.dstATop,
                             ),
                             fit: BoxFit.cover,
                           ),
@@ -202,7 +204,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Potongan harga %',
+                  'Potongan harga',
                   style: blackTextStyle.copyWith(
                     fontWeight: bold,
                   ),
@@ -245,9 +247,13 @@ class _HomePageState extends State<HomePage> {
                   height: 205,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    image: const DecorationImage(
-                      image: AssetImage(
+                    image: DecorationImage(
+                      image: const AssetImage(
                         'assets/promotion2.jpg',
+                      ),
+                      colorFilter: ColorFilter.mode(
+                        kBlackColor.withOpacity(0.9),
+                        BlendMode.dstATop,
                       ),
                     ),
                   ),

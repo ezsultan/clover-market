@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clover/model/product_model.dart';
+import 'package:clover/provider/cart_provider.dart';
 import 'package:clover/provider/product_provider.dart';
 import 'package:clover/shared/theme.dart';
 import 'package:clover/widget/custom_button.dart';
@@ -7,6 +8,7 @@ import 'package:clover/widget/custom_recommend_tile_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 class DetailProduct extends StatefulWidget {
   final ProductModel product;
@@ -25,6 +27,7 @@ class _DetailProductState extends State<DetailProduct> {
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of(context);
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
     Widget header() {
       return Column(
         children: [
@@ -106,13 +109,23 @@ class _DetailProductState extends State<DetailProduct> {
                     ),
                   ),
                 ),
-                Image(
-                  image: const AssetImage(
-                    'assets/icon_add_cart.png',
+                IconButton(
+                  onPressed: () {
+                    cartProvider.addCart(widget.product);
+                    Get.snackbar(
+                      'Selamat',
+                      'Produk berhasil ditambahkan',
+                      icon: Icon(
+                        Icons.done,
+                      ),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.add_shopping_cart,
+                    size: 30,
+                    color: kPrimaryColor,
                   ),
-                  width: 24,
-                  color: kGreyColor,
-                )
+                ),
               ],
             ),
             const SizedBox(
@@ -219,7 +232,10 @@ class _DetailProductState extends State<DetailProduct> {
         child: CustomeButton(
           text: 'Beli Sekarang',
           color: kPrimaryColor,
-          onPressed: () {},
+          onPressed: () async {
+            cartProvider.addCart(widget.product);
+            Navigator.pushNamed(context, '/cart');
+          },
         ),
       ),
       body: ListView(

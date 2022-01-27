@@ -8,6 +8,7 @@ import 'package:clover/widget/custom_password_textfield.dart';
 import 'package:clover/widget/custom_tac_button.dart';
 import 'package:clover/widget/custom_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../shared/theme.dart';
 
@@ -51,14 +52,20 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             (route) => false);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: kRedColor,
-            duration: const Duration(seconds: 3),
-            content: const Text(
-              'Gagal Register !',
-              textAlign: TextAlign.center,
-            ),
+        Get.snackbar(
+          'Gagal daftar',
+          'Pastikan data anda benar',
+          icon: Icon(
+            Icons.warning,
+          ),
+          backgroundColor: kRedColor,
+          margin: const EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+          ),
+          duration: const Duration(
+            seconds: 1,
           ),
         );
       }
@@ -77,7 +84,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Welcome to Clover',
+            'Silahkan daftar',
             style: blackTextStyle.copyWith(
               fontSize: 18,
               fontWeight: bold,
@@ -85,7 +92,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Sign in to continue',
+            'Masukan data anda',
             style: greyTextStyle.copyWith(
               fontSize: 14,
             ),
@@ -98,7 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
       Widget inputUsername() {
         return CustomTextField(
           imageUrl: 'assets/icon_user.png',
-          hintText: 'Username',
+          hintText: 'Nama Pengguna',
           controller: usernameController,
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -124,7 +131,7 @@ class _SignUpPageState extends State<SignUpPage> {
       Widget inputPassword() {
         return CustomPasswordTextfield(
           imageUrl: 'assets/icon_password.png',
-          hintText: 'Password',
+          hintText: 'Kata Sandi',
           obscureText: false,
           controller: passwordController,
           validator: (value) {
@@ -156,7 +163,7 @@ class _SignUpPageState extends State<SignUpPage> {
               color: kPrimaryColor,
             )
           : CustomeButton(
-              text: 'Masuk',
+              text: 'Daftar',
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   handleSignUp();
@@ -169,8 +176,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
     Widget bottomContent() {
       return CustomTacButton(
-        text: 'Don\'t have an account? ',
-        button: 'Login',
+        text: 'Sudah memiliki akun? ',
+        button: 'Masuk',
         onPressed: () {
           Navigator.pushNamed(context, '/login');
         },

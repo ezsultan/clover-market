@@ -1,13 +1,19 @@
+import 'package:clover/provider/cart_provider.dart';
 import 'package:clover/widget/custom_button.dart';
 import 'package:clover/widget/custom_cart_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../shared/theme.dart';
 
 class CartPage extends StatelessWidget {
-  const CartPage({Key? key}) : super(key: key);
+  const CartPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
     AppBar _buildAppbar() {
       return AppBar(
         leading: IconButton(
@@ -84,50 +90,11 @@ class CartPage extends StatelessWidget {
 
     Widget content() {
       return ListView(
-        children: const [
-          CartTile(
-            imageUrl: 'assets/labu.png',
-            price: 'Rp 9999',
-            title: 'Ini tu labuh',
-            qty: '2',
-          ),
-          CartTile(
-            imageUrl: 'assets/labu.png',
-            price: 'Rp 9999',
-            title: 'Ini tu labuh',
-            qty: '2',
-          ),
-          CartTile(
-            imageUrl: 'assets/labu.png',
-            price: 'Rp 9999',
-            title: 'Ini tu labuh',
-            qty: '2',
-          ),
-          CartTile(
-            imageUrl: 'assets/labu.png',
-            price: 'Rp 9999',
-            title: 'Ini tu labuh',
-            qty: '2',
-          ),
-          CartTile(
-            imageUrl: 'assets/labu.png',
-            price: 'Rp 9999',
-            title: 'Ini tu labuh',
-            qty: '2',
-          ),
-          CartTile(
-            imageUrl: 'assets/labu.png',
-            price: 'Rp 9999',
-            title: 'Ini tu labuh',
-            qty: '2',
-          ),
-          CartTile(
-            imageUrl: 'assets/labu.png',
-            price: 'Rp 9999',
-            title: 'Ini tu labuh',
-            qty: '2',
-          ),
-        ],
+        children: cartProvider.cart
+            .map((cart) => CartTile(
+                  cart: cart,
+                ))
+            .toList(),
       );
     }
 
@@ -147,8 +114,12 @@ class CartPage extends StatelessWidget {
                     style: greenTextStyle,
                   ),
                   Text(
-                    '9999',
-                    style: greyTextStyle.copyWith(
+                    NumberFormat.currency(
+                      locale: 'id',
+                      decimalDigits: 0,
+                      symbol: 'Rp ',
+                    ).format(cartProvider.totalPrice()),
+                    style: greenTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: semiBold,
                     ),
@@ -182,11 +153,6 @@ class CartPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: kBackgroundColor,
-      // bottomNavigationBar: CustomeButton(
-      //   text: 'Lanjutkan Transaksi',
-      //   onPressed: () {},
-      //   color: kPrimaryColor,
-      // ),
       appBar: _buildAppbar(),
       body: content(),
       bottomNavigationBar: customBottomNavbar(),

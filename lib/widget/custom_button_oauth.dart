@@ -25,7 +25,9 @@ class CustomButtonOauth extends StatelessWidget {
               imageUrl,
               width: 24,
             ),
-            const SizedBox(width: 80),
+            const SizedBox(
+              width: 60,
+            ),
             Text(
               text,
               style: greyTextStyle.copyWith(

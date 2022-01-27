@@ -1,5 +1,5 @@
 import 'package:clover/page/home_page.dart';
-import 'package:clover/page/products_page.dart';
+import 'package:clover/page/explore_page.dart';
 import 'package:clover/page/about_page.dart';
 import 'package:clover/page/transaction_page.dart';
 // import 'package:clover/shared/bottom_navbar.dart';
@@ -114,7 +114,7 @@ class _MainPageState extends State<MainPage> {
         case 0:
           return const HomePage();
         case 1:
-          return const ProductPage();
+          return const ExplorePage();
         case 2:
           return const TransactionPage();
         case 3:

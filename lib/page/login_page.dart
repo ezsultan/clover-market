@@ -11,6 +11,7 @@ import 'package:clover/widget/custom_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -46,15 +47,20 @@ class _LoginPageState extends State<LoginPage> {
           (route) => false,
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red,
-            content: const Text('Data yang anda masukan salah'),
-            duration: const Duration(seconds: 3),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
-            ),
+        Get.snackbar(
+          'Gagal',
+          'Kredensial anda salah',
+          icon: const Icon(
+            Icons.warning,
+          ),
+          backgroundColor: kRedColor,
+          margin: const EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+          ),
+          duration: const Duration(
+            seconds: 1,
           ),
         );
       }
@@ -75,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Welcome to Clover',
+            'Selamat datang Clover',
             style: blackTextStyle.copyWith(
               fontSize: 18,
               fontWeight: bold,
@@ -83,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Sign in to continue',
+            'Login untuk melanjutkan',
             style: greyTextStyle.copyWith(
               fontSize: 14,
             ),
@@ -109,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
       Widget inputPassword() {
         return CustomPasswordTextfield(
           imageUrl: 'assets/icon_password.png',
-          hintText: 'Password',
+          hintText: 'Kata Sandi',
           obscureText: false,
           controller: passwordController,
           validator: (value) {
@@ -173,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
     Widget buttonOauth() {
       Widget buttonGoogle() {
         return CustomButtonOauth(
-          text: 'Login with google',
+          text: '   Masuk dengan google',
           onPressed: () {},
           imageUrl: 'assets/icon_google.png',
         );
@@ -181,7 +187,7 @@ class _LoginPageState extends State<LoginPage> {
 
       Widget buttonFacebook() {
         return CustomButtonOauth(
-          text: 'Login with google',
+          text: 'Masuk dengan facebook',
           onPressed: () {},
           imageUrl: 'assets/icon_facebook.png',
         );
@@ -199,14 +205,14 @@ class _LoginPageState extends State<LoginPage> {
     Widget bottomContent() {
       Widget forgotPasswordButton() {
         return const CustomTextButton(
-          text: 'Forgot Password',
+          text: 'Lupa kata sandi',
         );
       }
 
       Widget tacButton() {
         return CustomTacButton(
-          text: 'Don\'t have an account? ',
-          button: 'Register',
+          text: 'Belum memiliki akun? ',
+          button: 'Daftar',
           onPressed: () {
             Navigator.pushNamed(context, '/register');
           },

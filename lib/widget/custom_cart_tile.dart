@@ -1,21 +1,20 @@
+import 'package:clover/model/cart_model.dart';
+import 'package:clover/provider/cart_provider.dart';
 import 'package:clover/shared/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CartTile extends StatelessWidget {
-  final String imageUrl;
-  final String title;
-  final String price;
-  final String qty;
+  final CartModel cart;
+
   const CartTile({
     Key? key,
-    required this.imageUrl,
-    required this.price,
-    required this.title,
-    required this.qty,
+    required this.cart,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
     return Container(
       margin: EdgeInsets.only(
         top: 30,
@@ -43,8 +42,8 @@ class CartTile extends StatelessWidget {
             decoration: BoxDecoration(
               color: borderColor,
               image: DecorationImage(
-                image: AssetImage(
-                  imageUrl,
+                image: NetworkImage(
+                  cart.product!.photos![0].url!,
                 ),
               ),
               border: Border.all(
@@ -64,7 +63,7 @@ class CartTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    cart.product!.name!,
                     style: greyTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: bold,
@@ -75,7 +74,7 @@ class CartTile extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    '$price x $qty',
+                    'Rp ${cart.product!.price!.round().toString()}',
                     style: greenTextStyle.copyWith(
                       fontSize: 12,
                       fontWeight: bold,
@@ -86,16 +85,36 @@ class CartTile extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Icon(
-                        Icons.remove_circle,
-                        color: kRedColor,
+                      GestureDetector(
+                        onTap: () {
+                          cartProvider.minQuantity(cart.id!);
+                        },
+                        child: Icon(
+                          Icons.remove_circle,
+                          color: kRedColor,
+                        ),
                       ),
                       const SizedBox(
-                        width: 10,
+                        width: 5,
                       ),
-                      Icon(
-                        Icons.add_circle,
-                        color: kRedColor,
+                      Text(
+                        cart.quantity.toString(),
+                        style: greenTextStyle.copyWith(
+                          fontSize: 16,
+                          fontWeight: bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          cartProvider.addQuantity(cart.id!);
+                        },
+                        child: Icon(
+                          Icons.add_circle,
+                          color: kGreenColor,
+                        ),
                       ),
                     ],
                   )
@@ -103,10 +122,15 @@ class CartTile extends StatelessWidget {
               ),
             ),
           ),
-          Icon(
-            Icons.delete_forever,
-            size: 40,
-            color: kRedColor,
+          GestureDetector(
+            onTap: () {
+              cartProvider.removeProduct(cart.id!);
+            },
+            child: Icon(
+              Icons.delete_forever,
+              size: 40,
+              color: kRedColor,
+            ),
           ),
           const SizedBox(
             width: 12,
