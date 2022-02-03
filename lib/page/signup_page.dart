@@ -194,7 +194,7 @@ class _SignUpPageState extends State<SignUpPage> {
             margin: EdgeInsets.symmetric(
               horizontal: defaultMargin,
             ),
-            child: Column(
+            child: ListView(
               children: [
                 const SizedBox(height: 30),
                 header(),

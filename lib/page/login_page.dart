@@ -239,8 +239,7 @@ class _LoginPageState extends State<LoginPage> {
             margin: EdgeInsets.symmetric(
               horizontal: defaultMargin,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: ListView(
               children: [
                 const SizedBox(height: 20),
                 header(),
